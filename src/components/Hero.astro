@@ -1,0 +1,218 @@
+---
+import Icon from "./Icon.astro";
+import { stages, TELEGRAM, PHONE_HREF } from "../data/site";
+const H1 = "Реабілітація і пілатес у Києві: від болю до сили";
+---
+<section id="hero" class="hero" data-rec="R-013">
+  <div class="container">
+    <h1 class="hero__title" data-rec="SEO-R001">{H1}</h1>
+
+    <ol class="track" aria-label="Маршрут руху: з чого починається і куди веде">
+      <li class="zero">
+        <div class="zero__box">
+          <div class="zero__body">
+            <p class="zero__lead">
+              <span class="zero__title">Починаємо з оцінки руху</span>
+              <span class="zero__facts num"><span>90 хв</span><span>2 000 грн</span></span>
+            </p>
+            <div class="zero__actions">
+              <a class="btn zero__cta" href={TELEGRAM} data-rec="R-002,R-005,S-R006,G-R002">
+                <span>Записатися в Telegram</span>
+                <Icon name="telegram" />
+              </a>
+              <a class="link zero__call" href={PHONE_HREF} data-rec="R-005">
+                <Icon name="phone" />Подзвонити
+              </a>
+            </div>
+            <p class="zero__where small">вул. Пирогова, 6А, 5 хв пішки від м. Університет</p>
+          </div>
+          <img class="zero__runner" src="/img/runner-ink.webp" width="225" height="300" alt="" />
+        </div>
+      </li>
+      {stages.map((s, i) => (
+        <li class="station" style={`--i:${i}`}>
+          <a href="#route">
+            <span class="station__n num">{i + 1}</span>
+            <span class="station__name">{s.name}</span>
+            <span class="station__what">{s.what}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+
+    <div class="hero__meta small">
+      <p class="hero__place"><Icon name="map" />вул. Пирогова, 6А, п’ять хвилин пішки від м. Університет</p>
+      <p>Пн–Пт 08:00–20:00, Сб–Нд 09:00–18:00</p>
+      <a class="link" href="#first-visit">Що буде на першому візиті</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--s-4) var(--s-8); }
+  .hero__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-display);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    max-width: 13em;
+  }
+  /* Route track. Mobile: vertical line at the left edge. */
+  .track {
+    position: relative;
+    display: grid;
+    gap: 0;
+    margin-top: var(--s-4);
+    padding-left: 20px;
+  }
+  .track::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--track);
+    background: var(--color-text);
+    transform-origin: 50% 0;
+  }
+  .zero__box {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-2) var(--s-2) var(--s-3);
+    background: var(--color-accent);
+    color: var(--color-text);
+    overflow: hidden;
+  }
+  .zero__box::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 28px;
+    width: 12px;
+    height: var(--track);
+    background: var(--color-text);
+  }
+  .zero__body { display: grid; gap: var(--s-2); align-content: start; min-width: 0; }
+  .zero__lead { display: grid; gap: var(--s-1); }
+  .zero__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-title);
+    line-height: 1.1;
+  }
+  .zero__facts { display: flex; flex-wrap: wrap; gap: 0 var(--s-3); font-weight: 600; font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem); line-height: 1.1; }
+  .zero__actions { display: grid; gap: .25rem; }
+  .zero__cta { min-height: 52px; width: 100%; }
+  .zero__call { justify-content: center; }
+  .zero__where { display: block; }
+  .zero__title { padding-right: 64px; }
+  .zero__runner {
+    position: absolute;
+    top: var(--s-2);
+    right: var(--s-2);
+    width: 56px;
+    height: auto;
+  }
+  .zero__cta span { white-space: nowrap; }
+
+  .station a {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: .75rem;
+    align-items: baseline;
+    padding: .875rem 0 .875rem var(--s-2);
+    text-decoration: none;
+    min-height: 44px;
+  }
+  .station a::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 1.45rem;
+    width: 16px;
+    height: var(--track);
+    background: var(--color-text);
+  }
+  .station__n { font-size: var(--fs-small); font-weight: 600; color: var(--color-muted); }
+  .station__name {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.1;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .station__what { grid-column: 2; font-size: var(--fs-small); color: var(--color-muted); line-height: 1.4; }
+  .station a:hover .station__name { color: var(--color-accent-ink); }
+
+  .hero__meta { display: none; }
+
+  @media (min-width: 40em) {
+    .zero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-3); }
+    .zero__cta { width: auto; }
+    .zero__runner { width: 88px; }
+  }
+
+  /* Desktop: the track runs horizontally across the container, station zero is the pink field. */
+  @media (min-width: 64em) {
+    .hero { padding-block: clamp(2.5rem, -1rem + 5vw, 4.5rem) var(--s-6); }
+    .hero > .container {
+      display: flex;
+      flex-direction: column;
+      min-height: min(calc(100svh - var(--nav-h) - 2px - clamp(2.5rem, -1rem + 5vw, 4.5rem) - var(--s-6)), 52rem);
+    }
+    .track { margin-top: auto !important; }
+    .hero__title { margin-bottom: var(--s-6); }
+    .track {
+      grid-template-columns: minmax(0, 5fr) repeat(4, minmax(0, 1.75fr));
+      column-gap: var(--gap);
+      margin-top: clamp(2.5rem, 0rem + 3.5vw, 3.5rem);
+      padding-left: 0;
+      padding-top: var(--track);
+    }
+    .track::before { left: 0; right: 0; bottom: auto; width: auto; height: var(--track); transform-origin: 0 50%; }
+    .zero__box { min-height: 16rem; padding: var(--s-4) var(--s-3) var(--s-3) var(--s-4); grid-template-columns: minmax(0, 1fr) 120px; column-gap: var(--s-3); }
+    .zero__box::before { display: none; }
+    .zero__title { padding-right: 0; }
+    .zero__runner { position: static; grid-column: 2; grid-row: 1; width: 120px; align-self: end; margin: 0 0 -.5rem; }
+    .zero__where { display: none; }
+    .station a {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: .375rem;
+      padding: var(--s-3) 0 var(--s-2) 0;
+    }
+    .station a::before { left: 0; top: calc(-1 * var(--track)); width: var(--track); height: 16px; }
+    .station__n { padding-left: 1rem; }
+    .station__name { font-size: clamp(1.25rem, 0.9rem + 0.6vw, 1.625rem); }
+    .station__what { grid-column: 1; }
+    .hero__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s-1) var(--s-4);
+      margin-top: var(--s-3);
+      color: var(--color-muted);
+    }
+    .hero__place { display: inline-flex; align-items: center; gap: .5rem; }
+    .hero__place :global(svg) { width: 18px; height: 18px; }
+    .hero__meta .link { color: var(--color-text); margin-left: auto; }
+  }
+
+  /* Effect 2: the track draws itself from station zero, stations appear one after another. Text above stays put. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .track::before { animation: track-draw-y 400ms var(--ease-out) both; }
+    :global(.js) .station { animation: station-in 300ms var(--ease-out) both; animation-delay: calc(200ms + var(--i) * 60ms); }
+    @media (min-width: 64em) {
+      :global(.js) .track::before { animation: track-draw-x 700ms var(--ease-out) both; }
+      :global(.js) .station { animation-duration: 400ms; animation-delay: calc(300ms + var(--i) * 60ms); }
+    }
+  }
+  @keyframes track-draw-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes track-draw-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes station-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>

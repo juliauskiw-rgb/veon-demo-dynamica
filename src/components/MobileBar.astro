@@ -1,0 +1,61 @@
+---
+import Icon from "./Icon.astro";
+import { TELEGRAM, PHONE_HREF } from "../data/site";
+---
+<nav class="mbar" aria-label="Швидкий запис" data-rec="R-004" data-mbar>
+  <a class="mbar__tg" href={TELEGRAM} data-rec="R-002,R-005"><Icon name="telegram" size={22} /><span>Telegram</span></a>
+  <a class="mbar__call" href={PHONE_HREF} data-rec="R-005"><Icon name="phone" size={22} /><span>Подзвонити</span></a>
+</nav>
+
+<script>
+  // The bar appears once the first screen (with its own buttons) has scrolled away.
+  const bar = document.querySelector<HTMLElement>("[data-mbar]");
+  const hero = document.getElementById("hero");
+  if (bar && hero && "IntersectionObserver" in window) {
+    const set = (show: boolean) => {
+      bar.classList.toggle("is-hidden", !show);
+      bar.toggleAttribute("inert", !show);
+    };
+    set(false);
+    new IntersectionObserver(([e]) => set(!e.isIntersecting), { threshold: 0 }).observe(hero);
+  }
+</script>
+
+<style>
+  .mbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--color-text);
+    border-top: 1px solid var(--color-text);
+    transition: transform 240ms var(--ease-out);
+  }
+  .mbar.is-hidden { transform: translateY(110%); }
+  .mbar a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    height: var(--bar-h);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .mbar__tg { background: var(--color-text); color: var(--color-bg); }
+  .mbar__tg:active { background: var(--color-ink-hover); }
+  .mbar__call { background: var(--color-bg); color: var(--color-text); }
+  .mbar__call:active { background: var(--color-surface); }
+  .mbar a:focus-visible { outline-offset: -4px; }
+  .mbar__tg:focus-visible { outline-color: var(--color-bg); }
+  :global(body) { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom)); }
+  @media (min-width: 48em) {
+    .mbar { display: none; }
+    :global(body) { padding-bottom: 0; }
+  }
+</style>

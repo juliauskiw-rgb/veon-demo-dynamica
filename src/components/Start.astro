@@ -1,0 +1,169 @@
+---
+import Icon from "./Icon.astro";
+import { situations, TELEGRAM } from "../data/site";
+---
+<section id="start" class="section start" data-rec="R-003" data-start>
+  <div class="container start__grid">
+    <div class="start__head">
+      <h2 class="h-section">З чого почати</h2>
+      <p class="start__intro">Тут найчастіше плутаються: шукають у прайсі процедуру, а починати треба з оцінки. Оберіть, що ближче до вас.</p>
+      <div class="start__tabs" role="tablist" aria-label="Ваша ситуація" hidden data-tabs>
+        {situations.map((s, i) => (
+          <button class="start__tab" type="button" role="tab" id={`tab-${s.id}`} aria-controls={`sit-${s.id}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}>
+            {s.title}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="start__panels">
+      {situations.map((s) => (
+        <article class="sit" id={`sit-${s.id}`} aria-labelledby={`q-${s.id}`} data-panel>
+          <h3 class="sit__q" id={`q-${s.id}`}>{s.title}</h3>
+          <div class="sit__answer">
+            <p class="sit__service">{s.service}</p>
+            <p class="sit__facts num">
+              {s.time && <span>{s.time}</span>}
+              <span>{s.price}</span>
+            </p>
+            <p class="sit__text">{s.text}</p>
+            <a class="btn sit__cta" href={TELEGRAM} data-rec="R-002,R-005"><span>{s.cta}</span><Icon name="telegram" /></a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Desktop: the four situations become tabs with one answer panel. Mobile and no-JS: all four answers are listed.
+  const root = document.querySelector<HTMLElement>("[data-start]");
+  const tablist = root?.querySelector<HTMLElement>("[data-tabs]");
+  if (root && tablist) {
+    const tabs = Array.from(tablist.querySelectorAll<HTMLButtonElement>("[role=tab]"));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-panel]"));
+    const mq = window.matchMedia("(min-width: 64em)");
+    let current = 0;
+    const select = (i: number, focus = false) => {
+      current = i;
+      tabs.forEach((t, k) => {
+        t.setAttribute("aria-selected", String(k === i));
+        t.tabIndex = k === i ? 0 : -1;
+      });
+      panels.forEach((p, k) => {
+        p.hidden = k !== i;
+        p.classList.toggle("is-active", k === i);
+      });
+      if (focus) tabs[i].focus();
+    };
+    const enable = () => {
+      root.classList.add("is-tabbed");
+      tablist.hidden = false;
+      panels.forEach((p, k) => {
+        p.setAttribute("role", "tabpanel");
+        p.setAttribute("aria-labelledby", tabs[k].id);
+        p.tabIndex = 0;
+      });
+      select(current);
+    };
+    const disable = () => {
+      root.classList.remove("is-tabbed");
+      tablist.hidden = true;
+      panels.forEach((p, k) => {
+        p.hidden = false;
+        p.classList.remove("is-active");
+        p.removeAttribute("role");
+        p.removeAttribute("tabindex");
+        p.setAttribute("aria-labelledby", `q-${p.id.replace("sit-", "")}`);
+        void k;
+      });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", (e) => {
+        const keys: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+        if (e.key in keys) { e.preventDefault(); select((i + keys[e.key] + tabs.length) % tabs.length, true); }
+        if (e.key === "Home") { e.preventDefault(); select(0, true); }
+        if (e.key === "End") { e.preventDefault(); select(tabs.length - 1, true); }
+      });
+    });
+    const apply = () => (mq.matches ? enable() : disable());
+    apply();
+    mq.addEventListener("change", apply);
+  }
+</script>
+
+<style>
+  .start__grid { display: grid; gap: var(--s-6); }
+  .start__head { display: grid; gap: var(--s-3); align-content: start; }
+  .start__intro { font-size: var(--fs-lede); line-height: 1.45; color: var(--color-muted); max-width: 30em; }
+
+  .start__panels { display: grid; gap: var(--s-4); }
+  .sit { border-top: var(--track) solid var(--color-text); padding-top: var(--s-3); display: grid; gap: var(--s-2); }
+  .sit__q { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title); line-height: 1.12; }
+  .sit__answer { display: grid; gap: var(--s-2); }
+  .sit__service { font-weight: 600; }
+  .sit__facts { display: flex; flex-wrap: wrap; gap: 0 var(--s-3); font-weight: 600; font-size: clamp(1.5rem, 1.2rem + 1vw, 2.5rem); line-height: 1.1; color: var(--color-accent-ink); }
+  .sit__text { color: var(--color-muted); max-width: 34em; }
+  .sit__cta { justify-self: start; min-height: 52px; }
+  .sit__cta span { text-wrap: balance; }
+
+  @media (min-width: 64em) {
+    .start__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--gap); align-items: stretch; }
+    .start__tabs { display: grid; margin-top: var(--s-3); border-top: 1px solid var(--color-line); }
+    .start__tabs[hidden] { display: none; }
+    .start__tab {
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-height: 72px;
+      padding: var(--s-2) var(--s-4) var(--s-2) 0;
+      border: 0;
+      border-bottom: 1px solid var(--color-line);
+      background: transparent;
+      text-align: left;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: var(--fs-title);
+      line-height: 1.15;
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .start__tab::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 24px;
+      height: var(--track);
+      background: var(--color-text);
+      transform: scaleX(0);
+      transform-origin: 100% 50%;
+      transition: transform 220ms var(--ease-out);
+    }
+    .start__tab:hover { color: var(--color-text); }
+    .start__tab[aria-selected="true"] { color: var(--color-text); }
+    .start__tab[aria-selected="true"]::after { transform: scaleX(1); }
+
+    .is-tabbed .start__panels { display: grid; }
+    .is-tabbed .sit[hidden] { display: none; }
+    .is-tabbed .sit {
+      border-top: 0;
+      padding: var(--s-6) var(--s-6) var(--s-4);
+      background: var(--color-accent);
+      align-content: space-between;
+    }
+    .is-tabbed .sit__q { display: none; }
+    .is-tabbed .sit__answer { gap: var(--s-3); }
+    .is-tabbed .sit__service { font-family: var(--font-display); font-size: var(--fs-section); line-height: 1.04; font-weight: 700; }
+    .is-tabbed .sit__facts { color: var(--color-text); font-size: clamp(2rem, 1rem + 1.6vw, 3rem); }
+    .is-tabbed .sit__text { color: var(--color-text); font-size: var(--fs-lede); }
+  }
+
+  /* Effect 3: the answer panel changes with a short fade and shift. */
+  @media (prefers-reduced-motion: no-preference) {
+    .is-tabbed .sit.is-active .sit__answer { animation: sit-in 220ms var(--ease-out) both; }
+  }
+  @keyframes sit-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>

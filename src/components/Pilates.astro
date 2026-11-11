@@ -1,0 +1,104 @@
+---
+import Icon from "./Icon.astro";
+import { schedule, pilatesPrices, TELEGRAM } from "../data/site";
+---
+<section id="pilates" class="section pilates">
+  <div class="container pilates__grid">
+    <div class="pilates__head">
+      <h2 class="h-section">Пілатес на реформерах</h2>
+      <p class="pilates__lede">Метод Polestar Pilates. Це не заміна реабілітації, а її продовження: коли біль минув і треба, щоб він не повернувся.</p>
+      <p class="pilates__note">На реформері можна працювати і після травми, і без досвіду: тіло рухається по заданій траєкторії, а не шукає її саме.</p>
+      <a class="btn pilates__cta" href={TELEGRAM} data-rec="R-002,R-005"><span>Записатися на тестове в Telegram</span><Icon name="telegram" /></a>
+    </div>
+
+    <div class="pilates__body">
+      <div class="sched">
+        <h3 class="sched__caption" id="sched-title">Групові заняття</h3>
+        <table class="sched__table num" aria-labelledby="sched-title">
+          <thead>
+            <tr>
+              {schedule.map((d) => <th scope="col" data-day={d.day}><abbr title={d.name}>{d.short}</abbr></th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {[0, 1].map((r) => (
+              <tr>
+                {schedule.map((d) => <td data-day={d.day}>{d.times[r]}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="sched__foot small muted">У неділю групових занять немає.<span class="sched__today-note" data-today-note hidden></span></p>
+      </div>
+
+      <div class="pp">
+        <h3 class="pp__title">Формати і ціни, грн</h3>
+        <ul class="pp__list">
+          {pilatesPrices.map((p) => (
+            <li>
+              <span class="pp__name">{p.name}<span class="pp__note">{p.note}</span></span>
+              <span class="pp__price num">{p.price}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="small muted pp__subs">Абонементи на реформер: 5 занять за 4 750 грн, 8 занять за 7 360 грн, 12 занять за 10 560 грн.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Highlight today in the schedule (Kyiv time). Without JS the table is complete, just without the mark.
+  const day = Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Kyiv", weekday: "short" })
+    .formatToParts(new Date()).find((p) => p.type === "weekday")?.value
+    .replace(/Mon/, "1").replace(/Tue/, "2").replace(/Wed/, "3").replace(/Thu/, "4").replace(/Fri/, "5").replace(/Sat/, "6").replace(/Sun/, "0"));
+  const cells = document.querySelectorAll<HTMLElement>(`.sched [data-day="${day}"]`);
+  cells.forEach((c) => c.classList.add("is-today"));
+  const note = document.querySelector<HTMLElement>("[data-today-note]");
+  if (note && cells.length) { note.textContent = "Сьогоднішній день виділено кольором."; note.hidden = false; }
+</script>
+
+<style>
+  .pilates__grid { display: grid; gap: var(--s-6); }
+  .pilates__head { display: grid; gap: var(--s-3); align-content: start; }
+  .pilates__lede { font-size: var(--fs-lede); line-height: 1.45; max-width: 30em; }
+  .pilates__note { color: var(--color-muted); max-width: 32em; }
+  .pilates__cta { justify-self: start; min-height: 52px; }
+
+  .pilates__body { display: grid; gap: var(--s-6); }
+  .sched__table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .sched__caption {
+    margin-bottom: var(--s-2);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-title);
+  }
+    .sched__today-note { display: block; font-family: var(--font-body); font-weight: 500; font-size: var(--fs-small); color: var(--color-accent-ink); }
+  .sched__table th, .sched__table td { padding: .75rem .25rem; text-align: left; border-bottom: 1px solid var(--color-line); }
+  .sched__table th { font-weight: 600; font-size: var(--fs-small); border-bottom: var(--track) solid var(--color-text); }
+  .sched__table abbr { text-decoration: none; }
+  .sched__table td { font-size: clamp(.875rem, .7rem + .6vw, 1.25rem); font-weight: 500; }
+  .sched__table .is-today { color: var(--color-accent-ink); font-weight: 600; }
+  .sched__table th.is-today { border-bottom-color: var(--color-accent-ink); }
+  .sched__foot { margin-top: var(--s-2); }
+
+  .pp__title { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title); margin-bottom: var(--s-2); }
+  .pp__list { border-top: var(--track) solid var(--color-text); }
+  .pp__list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-2);
+    padding: .875rem 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .pp__name { display: grid; font-weight: 600; }
+  .pp__note { font-weight: 400; font-size: var(--fs-small); color: var(--color-muted); }
+  .pp__price { font-weight: 600; font-size: var(--fs-title); }
+  .pp__subs { margin-top: var(--s-2); }
+
+  @media (min-width: 64em) {
+    .pilates__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--gap); }
+    .pilates__body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-6); }
+  }
+</style>

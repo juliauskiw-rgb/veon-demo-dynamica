@@ -1,0 +1,74 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { rehabSituations, bodyZones, physio, TELEGRAM, SOON } from "../data/site";
+---
+<section id="directions" class="section directions" data-rec="R-009">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="h-section">Напрямки і зони тіла</h2>
+      <p>Знайдіть свою ситуацію або зону: з кожною працюють фахівці, які ведуть саме її.</p>
+    </div>
+
+    <div class="index">
+      <div class="index__row">
+        <h3 class="index__label">Реабілітація</h3>
+        <ul class="index__list">
+          {rehabSituations.map((t) => <li><FutureLink note={SOON}>{t}</FutureLink></li>)}
+        </ul>
+      </div>
+      <div class="index__row">
+        <h3 class="index__label">Зони тіла</h3>
+        <ul class="index__list">
+          {bodyZones.map((t) => <li><FutureLink note={SOON}>{t}</FutureLink></li>)}
+        </ul>
+      </div>
+      <div class="index__row">
+        <h3 class="index__label">Апаратна фізіотерапія і масаж</h3>
+        <p class="index__plain">{physio.join(", ")}.</p>
+      </div>
+    </div>
+
+    <div class="directions__next">
+      <p class="h-title">Не знаєте, з чим саме? Почніть з оцінки руху.</p>
+      <a class="btn" href={TELEGRAM} data-rec="R-002,R-005"><span>Записатися в Telegram</span><Icon name="telegram" /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .index { border-top: 1px solid var(--color-line); }
+  .index__row {
+    display: grid;
+    gap: var(--s-2);
+    padding-block: var(--s-3) var(--s-4);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .index__label { font-family: var(--font-body); font-size: var(--fs-small); font-weight: 600; line-height: 1.4; color: var(--color-muted); }
+  .index__list { display: flex; flex-wrap: wrap; gap: .25rem 1.75rem; }
+  .index__list :global(.future-link) {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.5rem);
+    line-height: 1.25;
+    min-height: 44px;
+    transition: color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
+  }
+  .index__list :global(.future-link:hover) { color: var(--color-accent-ink); text-decoration-color: var(--color-accent-ink); }
+  .index__plain { font-size: var(--fs-lede); line-height: 1.5; max-width: 40em; }
+
+  .directions__next {
+    display: grid;
+    gap: var(--s-3);
+    justify-items: start;
+    margin-top: var(--s-6);
+  }
+
+  @media (min-width: 64em) {
+    .index__row { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); column-gap: var(--gap); align-items: baseline; padding-block: var(--s-4); }
+    .index__label { font-size: var(--fs-body); }
+    .directions__next { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); column-gap: var(--gap); align-items: center; }
+    .directions__next .h-title { grid-column: 2; }
+    .directions__next .btn { grid-column: 2; }
+  }
+</style>

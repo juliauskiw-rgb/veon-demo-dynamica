@@ -1,0 +1,64 @@
+/* Hallmark · shape: route ledger · genre: editorial · theme: custom · job: book · idea: "the page is a movement route with a zero point: measure first, then lead stage by stage from pain to strength, and every step has a name, a duration and a price" · vibe: "cold movement lab, honest prices, measured steps"
+ * paper: #F2F3EF · accent: #F05581 · display: Arsenal · body: IBM Plex Sans · hero: lower-case headline over a full-width graphite route track whose pink station zero holds the first visit price and the Telegram action · nav: light sticky bar with the logo, six anchors, languages, Telegram button and a runner progress track · footer: light three-column footer with the legal line · imagery: client photos · signature: the runner from the logo stands on station zero and runs along the header track as the visitor scrolls from assessment to strength
+ * axes: chalk/Arsenal/brand pink · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: imagery, the client has no hall photos, so the route, the prices and the schedule carry the page and real team portraits carry the people */
+/* Client design tokens from design/concept.md (veon-concept: colors #F2F3EF #15171A #F05581 #B3164C #545A60; fonts Arsenal, IBM Plex Sans). */
+
+/* Metric fallbacks keep the font swap from shifting the layout. */
+@font-face { font-family: "IBM Plex Sans Fallback"; src: local("Arial"); size-adjust: 101%; ascent-override: 102%; descent-override: 27%; line-gap-override: 0%; }
+@font-face { font-family: "Arsenal Fallback"; src: local("Georgia"); size-adjust: 88%; ascent-override: 98%; descent-override: 26%; line-gap-override: 0%; }
+
+:root {
+  /* colour roles, concept §8.3 */
+  --color-bg: #F2F3EF;
+  --color-text: #15171A;
+  --color-muted: #545A60;
+  --color-accent: #F05581;
+  --color-accent-ink: #B3164C;
+  --color-muted-on-dark: #A9AFB5;
+  --color-line: #878D86;
+  --color-ink-hover: #2A2E33;
+  --color-surface: #E7E9E3;
+  --color-on-dark: #F2F3EF;
+
+  /* type, concept §8.4: Arsenal display, IBM Plex Sans text; 104/56/28/22/17/14 at 1440 → 44/32/22/18/16/14 at 390 */
+  --font-display: "Arsenal", "Arsenal Fallback", Georgia, serif;
+  --font-body: "IBM Plex Sans", "IBM Plex Sans Fallback", system-ui, sans-serif;
+  --fs-display: clamp(2.75rem, 1.357rem + 5.714vw, 6.5rem);
+  --fs-section: clamp(2rem, 1.443rem + 2.286vw, 3.5rem);
+  --fs-title: clamp(1.375rem, 1.236rem + 0.571vw, 1.75rem);
+  --fs-lede: clamp(1.125rem, 1.032rem + 0.381vw, 1.375rem);
+  --fs-body: clamp(1rem, 0.977rem + 0.095vw, 1.0625rem);
+  --fs-small: 0.875rem;
+
+  /* space, rhythm 8 */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2rem;
+  --s-6: 3rem;
+  --s-8: 4rem;
+  --s-12: 6rem;
+  --s-16: 8rem;
+  --section-y: clamp(4rem, 2.5rem + 6vw, 8.5rem);
+
+  /* layout, concept §8.5 */
+  --space: clamp(1rem, 0.786rem + 1.905vw, 2.5rem);
+  --container: 1360px;
+  --gap: clamp(1rem, 0.85rem + 0.6vw, 1.5rem);
+  --nav-h: 56px;
+  --header-h: calc(var(--nav-h) + 1rem);
+  --bar-h: 64px;
+  --track: 3px;
+
+  /* shape and motion */
+  --radius: 4px;
+  --radius-field: 2px;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 400ms;
+  --dur-fast: 160ms;
+}
+
+@media (min-width: 64em) {
+  :root { --nav-h: 64px; --track: 4px; }
+}

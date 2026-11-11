@@ -1,0 +1,78 @@
+---
+import Icon from "./Icon.astro";
+import { TELEGRAM } from "../data/site";
+const steps = [
+  { t: "Розмова і тестування руху", d: "Розмова про те, що турбує, і тести: спеціаліст дивиться, як працює все тіло, а не лише місце, де болить." },
+  { t: "Пробне заняття", d: "Частина тих самих 90 хвилин. Якщо рух болить, його не продавлюють: біль тут не показник роботи, а інформація." },
+  { t: "План і письмовий висновок", d: "Що виявили, що з цим робити і в якій послідовності. Це ваш документ, з ним можна йти куди завгодно." },
+];
+---
+<section id="first-visit" class="section visit">
+  <div class="container visit__grid">
+    <div class="visit__head">
+      <h2 class="h-section">Перший візит</h2>
+      <p class="visit__big num">90 хвилин</p>
+      <p class="visit__lede">Наприкінці ви знаєте свою точку старту і план дій.</p>
+    </div>
+
+    <ol class="visit__steps">
+      {steps.map((s, i) => (
+        <li>
+          <span class="visit__n num">{i + 1}</span>
+          <div>
+            <h3 class="h-title">{s.t}</h3>
+            <p>{s.d}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <dl class="visit__facts">
+      <div><dt>Направлення і МРТ</dt><dd>Не потрібні. Якщо дослідження знадобиться, направлення випишуть після прийому.</dd></div>
+      <div><dt>Що взяти</dt><dd>Одяг, у якому зручно рухатись, і змінне взуття. Свіжі знімки, якщо є.</dd></div>
+      <div><dt>Авто</dt><dd>Паркування вздовж вулиці і в прилеглих дворах.</dd></div>
+    </dl>
+
+    <a class="btn visit__cta" href={TELEGRAM} data-rec="R-002,R-005"><span>Записатися на оцінку в Telegram</span><Icon name="telegram" /></a>
+  </div>
+</section>
+
+<style>
+  .visit__grid { display: grid; gap: var(--s-6); }
+  .visit__head { display: grid; gap: var(--s-2); align-content: start; }
+  .visit__big {
+    margin-top: var(--s-2);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(3rem, 2rem + 4vw, 6rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .visit__lede { font-size: var(--fs-lede); color: var(--color-muted); max-width: 22em; }
+
+  .visit__steps { display: grid; gap: var(--s-4); counter-reset: none; }
+  .visit__steps li { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: var(--s-2); }
+  .visit__steps h3 { margin-bottom: var(--s-1); }
+  .visit__steps p { color: var(--color-muted); max-width: 34em; }
+  .visit__n {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: var(--track) solid var(--color-text);
+    border-radius: 50%;
+    font-weight: 600;
+  }
+
+  .visit__facts { display: grid; gap: var(--s-3); padding-top: var(--s-4); border-top: 1px solid var(--color-line); }
+  .visit__facts dt { font-weight: 600; margin-bottom: .25rem; }
+  .visit__facts dd { color: var(--color-muted); }
+  .visit__cta { justify-self: start; min-height: 52px; }
+
+  @media (min-width: 64em) {
+    .visit__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--gap); row-gap: var(--s-8); }
+    .visit__head { grid-row: span 2; position: sticky; top: calc(var(--nav-h) + var(--s-4)); }
+    .visit__facts { grid-column: 2; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--gap); }
+    .visit__cta { grid-column: 2; margin-top: calc(-1 * var(--s-4)); }
+  }
+</style>

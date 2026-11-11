@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Start from "../components/Start.astro";
+import Directions from "../components/Directions.astro";
+import Route from "../components/Route.astro";
+import FirstVisit from "../components/FirstVisit.astro";
+import Pilates from "../components/Pilates.astro";
+import Team from "../components/Team.astro";
+import Prices from "../components/Prices.astro";
+import Faq from "../components/Faq.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import MobileBar from "../components/MobileBar.astro";
+import { INSTAGRAM, TELEGRAM, EMAIL } from "../data/site";
+
+const title = "Реабілітація та пілатес на реформерах у Києві — Dynamica";
+const description =
+  "Лабораторія руху: оцінка руху 90 хв — 2 000 грн, реабілітація після травм і операцій, апаратна фізіотерапія, пілатес на реформерах. Запис у Telegram.";
+
+// concept §8.9: Physiotherapy (LocalBusiness); no AggregateRating until the rating is verified (R-007).
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Physiotherapy",
+  name: "Dynamica",
+  description: "Реабілітація, апаратна фізіотерапія і пілатес на реформерах у Києві",
+  telephone: "+380633456788",
+  email: EMAIL,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "вул. Пирогова, 6А",
+    addressLocality: "Київ",
+    addressCountry: "UA",
+  },
+  openingHoursSpecification: [
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "20:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Saturday", "Sunday"], opens: "09:00", closes: "18:00" },
+  ],
+  sameAs: [INSTAGRAM, TELEGRAM],
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+  <Hero />
+  <Start />
+  <Directions />
+  <Route />
+  <FirstVisit />
+  <Pilates />
+  <Team />
+  <Prices />
+  <Faq />
+  <Contacts />
+  <Footer slot="footer" />
+  <MobileBar slot="footer" />
+</Base>

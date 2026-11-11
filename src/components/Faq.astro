@@ -1,0 +1,60 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { faq, SOON } from "../data/site";
+---
+<section id="faq" class="section faq">
+  <div class="container faq__grid">
+    <h2 class="h-section">Питання перед записом</h2>
+    <div class="faq__list">
+      {faq.map((f) => (
+        <details class="qa">
+          <summary class="qa__q"><span>{f.q}</span><span class="qa__mark" aria-hidden="true"></span></summary>
+          <p class="qa__a">{f.a}</p>
+        </details>
+      ))}
+      <p class="faq__more"><FutureLink note={SOON}>Усі питання і відповіді</FutureLink></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__grid { display: grid; gap: var(--s-4); }
+  .faq__list { border-top: var(--track) solid var(--color-text); }
+  .qa { border-bottom: 1px solid var(--color-line); }
+  .qa__q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 64px;
+    padding: var(--s-2) 0;
+    font-weight: 600;
+    font-size: var(--fs-lede);
+    line-height: 1.35;
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .qa__q::-webkit-details-marker { display: none; }
+  .qa__q:hover { color: var(--color-accent-ink); }
+  .qa__mark { position: relative; flex: none; width: 20px; height: 20px; }
+  .qa__mark::before, .qa__mark::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(50% - 1px);
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    transition: transform 220ms var(--ease-out);
+  }
+  .qa__mark::after { transform: rotate(90deg); }
+  .qa[open] .qa__mark::after { transform: rotate(0deg); }
+  .qa__a { padding: 0 var(--s-6) var(--s-3) 0; color: var(--color-muted); max-width: 40em; }
+  .faq__more { margin-top: var(--s-3); font-weight: 600; }
+  .faq__more :global(.future-link) { min-height: 44px; }
+
+  @media (min-width: 64em) {
+    .faq__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: var(--gap); align-items: start; }
+  }
+</style>
